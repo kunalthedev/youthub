@@ -4,7 +4,7 @@ import Sidebar from "./Components/Sidebar/Sidebar";
 import HomeScreen from "./Screens/HomeScreen/HomeScreen";
 import { Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
-// import CategoriesBar from "./Components/CategoriesBar/CategoriesBar";
+import CategoriesBar from "./Components/CategoriesBar/CategoriesBar";
 import LoginScreen from "./Screens/LoginScreen/LoginScreen";
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -37,6 +37,7 @@ function App() {
     <Switch>
       <Route exact path="/">
         <Layout>
+          <CategoriesBar />
           <HomeScreen />
         </Layout>
       </Route>
