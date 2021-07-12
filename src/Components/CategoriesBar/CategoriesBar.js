@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getVideosByCategory } from "../../redux/actions/videos.action";
+import {
+  getPopularVideos,
+  getVideosByCategory,
+} from "../../redux/actions/videos.action";
 import "./_categoriesbar.scss";
 
 const keywords = [
@@ -10,8 +13,8 @@ const keywords = [
   "React Native",
   "use of API",
   "Redux",
-  "Music",
-  "Algorithm Art ",
+  "Punjabi Songs",
+  "S8UL ",
   "Guitar",
   "Bengali Songs",
   "Coding",
@@ -25,17 +28,23 @@ const keywords = [
 
 const CategoriesBar = () => {
   const [activeElement, setActiveElement] = useState("All");
+
   const dispatch = useDispatch();
   const handleClick = (value) => {
     setActiveElement(value);
-    dispatch(getVideosByCategory(value));
+    if (value === "All") {
+      dispatch(getPopularVideos());
+    } else {
+      dispatch(getVideosByCategory(value));
+    }
   };
+
   return (
     <div className="categoriesBar">
       {keywords.map((value, i) => (
         <span
-          key={i}
           onClick={() => handleClick(value)}
+          key={i}
           className={activeElement === value ? "active" : ""}
         >
           {value}

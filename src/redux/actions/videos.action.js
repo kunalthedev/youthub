@@ -3,9 +3,10 @@ import {
   HOME_VIDEOS_REQUEST,
   HOME_VIDEOS_SUCCESS,
 } from "../actionType";
+
 import request from "../../api";
 
-export const getPopularVideos = () => async (dispatch) => {
+export const getPopularVideos = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: HOME_VIDEOS_REQUEST,
@@ -16,9 +17,10 @@ export const getPopularVideos = () => async (dispatch) => {
         chart: "mostPopular",
         regionCode: "IN",
         maxResults: 20,
-        pageToken: "",
+        pageToken: getState().homeVideos.nextPageToken,
       },
     });
+
     dispatch({
       type: HOME_VIDEOS_SUCCESS,
       payload: {
@@ -44,13 +46,14 @@ export const getVideosByCategory = (keyword) => async (dispatch, getState) => {
     const { data } = await request("/search", {
       params: {
         part: "snippet",
-        regionCode: "IN",
+
         maxResults: 20,
         pageToken: getState().homeVideos.nextPageToken,
         q: keyword,
         type: "video",
       },
     });
+
     dispatch({
       type: HOME_VIDEOS_SUCCESS,
       payload: {
