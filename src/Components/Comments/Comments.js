@@ -20,7 +20,6 @@ const Comments = ({ videoId, totalComments }) => {
   ]);
 
   const [text, setText] = useState("");
-  console.log(text);
   const handleComment = (e) => {
     e.preventDefault();
     if (text.length === 0) return;
@@ -28,7 +27,6 @@ const Comments = ({ videoId, totalComments }) => {
     dispatch(addComment(videoId, text));
     setText("");
   };
-  // console.log(result);
   return (
     <div className="comments">
       <p>{totalComments} Comments</p>

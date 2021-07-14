@@ -9,13 +9,13 @@ import { useState } from "react";
 import request from "../../api";
 import { useHistory } from "react-router-dom";
 
-const VideoHorizontal = ({ video, searchScreen }) => {
+const VideoHorizontal = ({ video, searchScreen, subScreen }) => {
   const [views, setViews] = useState(null);
   const [duration, setDuration] = useState(null);
   const [channelIcon, setChannelIcon] = useState(null);
   const _videoId = video?.id?.videoId;
-  const _channelId = video?.snippet?.channelId;
-  const isVideo = video?.id?.kind === "youtube#video";
+  const _channelId = video?.snippet?.resourceId;
+  const isVideo = !(video?.id?.kind === "youtube#channel" || subScreen);
   useEffect(() => {
     const getVideoDetails = async () => {
       const {
@@ -44,13 +44,15 @@ const VideoHorizontal = ({ video, searchScreen }) => {
       });
       setChannelIcon(items[0].snippet.thumbnails.default);
     };
-    getChannelIcon();
-  }, [_channelId]);
+    if (isVideo) {
+      getChannelIcon();
+    }
+  }, [_channelId, isVideo]);
   const history = useHistory();
   const handleVideoClick = () => {
     isVideo
       ? history.push(`/watch/${_videoId}`)
-      : history.push(`/chnnel/${_channelId}`);
+      : history.push(`/channel/${_channelId?.channelId}`);
   };
 
   const seconds = moment.duration(duration).asSeconds();
@@ -61,7 +63,11 @@ const VideoHorizontal = ({ video, searchScreen }) => {
       className="videoHorizontal m-1 py-2 align-items-center"
       onClick={handleVideoClick}
     >
-      <Col xs={6} md={searchScreen ? 4 : 6} className="videoHorizontal__left">
+      <Col
+        xs={6}
+        md={searchScreen || subScreen ? 4 : 6}
+        className="videoHorizontal__left"
+      >
         <LazyLoadImage
           src={video?.snippet?.thumbnails?.medium?.url}
           effect="blur"
@@ -78,7 +84,7 @@ const VideoHorizontal = ({ video, searchScreen }) => {
       </Col>
       <Col
         xs={6}
-        md={searchScreen ? 8 : 6}
+        md={searchScreen || subScreen ? 8 : 6}
         className="videoHorizontal__right p-0"
       >
         <p className="videoHorizontal__title mb-1">{video?.snippet?.title}</p>
@@ -88,22 +94,29 @@ const VideoHorizontal = ({ video, searchScreen }) => {
             {moment(video?.snippet?.publishedAt).fromNow()}
           </div>
         )}
-        {searchScreen && (
-          <p className="mt-1 mt-1 videoHorizontal__desc">
-            {video?.snippet?.description}
-          </p>
-        )}
+        {searchScreen ||
+          (subScreen && (
+            <p className="mt-1 mt-1 videoHorizontal__desc">
+              {video?.snippet?.description}
+            </p>
+          ))}
         <div className="videoHorizontal__channel d-flex align-items-center m-1">
-          {isVideo && (
-            <LazyLoadImage
-              src={channelIcon?.url}
-              effect="blur"
-              className="videoHorizontal__thumbnail rounded-border"
-              wrapperClassName="videoHorizontal__thumbnail-wrapper"
-            />
-          )}
+          {isVideo ||
+            (searchScreen && (
+              <LazyLoadImage
+                src={channelIcon?.url}
+                effect="blur"
+                className="videoHorizontal__thumbnail rounded-border"
+                wrapperClassName="videoHorizontal__thumbnail-wrapper"
+              />
+            ))}
           <p className="mb-0">{video?.snippet?.channelTitle}</p>
         </div>
+        {subScreen && (
+          <p className="mt-2">
+            {video?.contentDetails?.totalItemCount} &nbsp; Videos
+          </p>
+        )}
       </Col>
     </Row>
   );

@@ -3,24 +3,21 @@ import { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import VideoHorizontal from "../../Components/VideoHorizontal/VideoHorizontal";
-import { getVideosBySearch } from "../../redux/actions/videos.action";
+import { getSubscriptionChannel } from "../../redux/actions/videos.action";
+import "./_subscriptionScreen.scss";
 
-const SearchScreen = () => {
-  const { query } = useParams();
+const SubscriptionScreen = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getVideosBySearch(query));
-  }, [dispatch, query]);
-
-  const data = useSelector((state) => state.searchedVideos);
-  console.log(data);
+    dispatch(getSubscriptionChannel());
+  }, [dispatch]);
+  const data = useSelector((state) => state.subscribedChannels);
   return (
-    <Container>
+    <Container fluid>
       {!data?.loading ? (
         data?.videos?.map((video) => (
-          <VideoHorizontal video={video} key={video.id.videoId} searchScreen />
+          <VideoHorizontal video={video} key={video.id} subScreen />
         ))
       ) : (
         <SkeletonTheme color="#343a40" highlightColor="#3c4147">
@@ -31,4 +28,4 @@ const SearchScreen = () => {
   );
 };
 
-export default SearchScreen;
+export default SubscriptionScreen;
