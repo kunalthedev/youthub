@@ -6,3 +6,9 @@
   width: 100%;
   margin-bottom: 2rem;
 }
+
+@media (max-width: $breakpoint-small) {
+  .watchscreen__player {
+    height: 35vh;
+  }
+}

@@ -11,6 +11,13 @@
   position: sticky;
   top: 10vh;
   left: 0;
+  * {
+    color: $text-color;
+    text-decoration: none;
+    &:hover {
+      text-decoration: none;
+    }
+  }
   li {
     display: flex;
     flex-direction: row;

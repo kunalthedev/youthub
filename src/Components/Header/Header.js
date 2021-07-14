@@ -4,6 +4,7 @@ import { FaBars } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdApps, MdNotifications } from "react-icons/md";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 const Header = ({ handleToggleSidebar }) => {
   const [input, setInput] = useState("");
 
@@ -13,6 +14,7 @@ const Header = ({ handleToggleSidebar }) => {
     if (input.length === 0) return;
     history.push(`/search/${input}`);
   };
+  const data = useSelector((state) => state?.auth?.user?.photoUrl);
   return (
     <div className="header">
       <FaBars
@@ -40,10 +42,7 @@ const Header = ({ handleToggleSidebar }) => {
       <div className="header__icons">
         <MdNotifications size={28} />
         <MdApps size={28} />
-        <img
-          src="https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png"
-          alt="avatar"
-        />
+        <img src={data} alt="avatar" />
       </div>
     </div>
   );

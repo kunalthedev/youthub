@@ -15,26 +15,25 @@ import SkeletonVideo from "../../Components/Seletons/SkeletonVideo";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getPopularVideos());
   }, [dispatch]);
 
-  const { videos, activeCategory, loading } = useSelector(
-    (state) => state.homeVideos
-  );
+  const data = useSelector((state) => state.homeVideos);
   const fetchData = () => {
-    if (activeCategory === "All") {
-      dispatch(getPopularVideos());
-    } else {
-      dispatch(getVideosByCategory(activeCategory));
+    if (data?.activeCategory === "All") dispatch(getPopularVideos());
+    else {
+      dispatch(getVideosByCategory(data?.activeCategory));
     }
   };
+
   return (
     <Container>
       <CategoriesBar />
 
       <InfiniteScroll
-        dataLength={videos.length}
+        dataLength={data?.videos?.length}
         next={fetchData}
         hasMore={true}
         loader={
@@ -42,8 +41,8 @@ const HomeScreen = () => {
         }
         className="row"
       >
-        {!loading
-          ? videos.map((video) => (
+        {!data?.loading
+          ? data?.videos.map((video) => (
               <Col lg={3} md={4} key={video.id}>
                 <Video video={video} />
               </Col>
