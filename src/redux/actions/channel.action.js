@@ -12,15 +12,15 @@ export const getChannelDetais = (id) => async (dispatch) => {
       type: CHANNEL_DETAILS_REQUEST,
     });
 
-    const { data } = await request("/channels", {
+    const ddata = await request("/channels", {
       params: {
         part: "snippet,statistics,contentDetails",
-        id,
+        id: id,
       },
     });
     dispatch({
       type: CHANNEL_DETAILS_SUCCESS,
-      payload: data.items[0],
+      payload: ddata?.data.items[0],
     });
   } catch (error) {
     console.log(error.response.data);

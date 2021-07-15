@@ -3,7 +3,7 @@ import "./_header.scss";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdApps, MdNotifications } from "react-icons/md";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 const Header = ({ handleToggleSidebar }) => {
   const [input, setInput] = useState("");
@@ -14,7 +14,7 @@ const Header = ({ handleToggleSidebar }) => {
     if (input.length === 0) return;
     history.push(`/search/${input}`);
   };
-  const data = useSelector((state) => state?.auth?.user?.photoUrl);
+  const data = useSelector((state) => state?.auth);
   return (
     <div className="header">
       <FaBars
@@ -22,11 +22,13 @@ const Header = ({ handleToggleSidebar }) => {
         size={26}
         onClick={() => handleToggleSidebar()}
       />
-      <img
-        src="http://pngimg.com/uploads/youtube/youtube_PNG2.png"
-        alt=""
-        className="header__logo"
-      />
+      <Link to="/">
+        <img
+          src="http://pngimg.com/uploads/youtube/youtube_PNG2.png"
+          alt=""
+          className="header__logo"
+        />
+      </Link>
       {/* <p>Youtube</p> */}
       <form onSubmit={handleSubmit}>
         <input
@@ -42,7 +44,7 @@ const Header = ({ handleToggleSidebar }) => {
       <div className="header__icons">
         <MdNotifications size={28} />
         <MdApps size={28} />
-        <img src={data} alt="avatar" />
+        <img src={data?.user?.photoUrl} alt="avatar" />
       </div>
     </div>
   );

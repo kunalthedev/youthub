@@ -39,8 +39,8 @@ export const getPopularVideos = () => async (dispatch, getState) => {
     dispatch({
       type: HOME_VIDEOS_SUCCESS,
       payload: {
-        videos: data.items,
-        nextPageToken: data.nextPageToken,
+        videos: data?.items,
+        nextPageToken: data?.nextPageToken,
         category: "All",
       },
     });
@@ -58,7 +58,7 @@ export const getVideosByCategory = (keyword) => async (dispatch, getState) => {
     dispatch({
       type: HOME_VIDEOS_REQUEST,
     });
-    const { data } = await request("/search", {
+    const ddata = await request("/search", {
       params: {
         part: "snippet",
 
@@ -72,8 +72,8 @@ export const getVideosByCategory = (keyword) => async (dispatch, getState) => {
     dispatch({
       type: HOME_VIDEOS_SUCCESS,
       payload: {
-        videos: data.items,
-        nextPageToken: data.nextPageToken,
+        videos: ddata?.data?.items,
+        nextPageToken: ddata?.data?.nextPageToken,
         category: keyword,
       },
     });
