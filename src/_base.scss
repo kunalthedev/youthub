@@ -29,3 +29,6 @@ body {
   -webkit-line-clamp: $number;
   -webkit-box-orient: vertical;
 }
+::-webkit-scrollbar {
+  width: 0px;
+}
